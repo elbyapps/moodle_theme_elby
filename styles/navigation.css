@@ -229,3 +229,89 @@
 .elby-navbar .navbar-toggler .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231e3a8a' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
+
+/* ============================================= */
+/* BOOST NAVBAR OVERRIDE - Apply elby styling to all pages */
+/* ============================================= */
+
+/* Main navbar container (Boost pages) - override bg-body */
+nav.navbar.fixed-top {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    border-bottom: none !important;
+}
+
+/* Center the primary navigation */
+nav.navbar.fixed-top .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav.navbar.fixed-top .primary-navigation {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+nav.navbar.fixed-top.bg-body {
+    --bs-bg-opacity: 1;
+    background-color: #ffffff !important;
+}
+
+/* Primary navigation links */
+.navbar.fixed-top .primary-navigation .nav-link {
+    color: #1e3a8a !important;
+    font-weight: 600;
+    font-size: 0.9375rem;
+}
+
+.navbar.fixed-top .primary-navigation .nav-link:hover,
+.navbar.fixed-top .primary-navigation .nav-link:focus {
+    color: #1e40af !important;
+}
+
+/* Active nav item */
+.navbar.fixed-top .primary-navigation .nav-link.active {
+    color: #1e3a8a !important;
+}
+
+/* Dropdown toggles in primary nav */
+.navbar.fixed-top .primary-navigation .dropdown-toggle {
+    color: #1e3a8a !important;
+}
+
+/* Navbar brand / site name */
+.navbar.fixed-top .navbar-brand {
+    color: #1e3a8a !important;
+}
+
+/* User menu dropdown */
+.navbar.fixed-top .usermenu .dropdown-toggle {
+    color: #1e3a8a !important;
+}
+
+/* Notification/message icons */
+.navbar.fixed-top .popover-region-toggle {
+    color: #1e3a8a !important;
+}
+
+/* Edit mode switch */
+.navbar.fixed-top .editmode-switch-form label {
+    color: #1e3a8a !important;
+}
+
+/* Custom menu items */
+.navbar.fixed-top .custom-menu .nav-link {
+    color: #1e3a8a !important;
+}
+
+/* Dividers */
+.navbar.fixed-top .divider {
+    background-color: #e2e8f0 !important;
+}
+
+/* Navbar toggler icon for mobile */
+.navbar.fixed-top .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%231e3a8a' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}

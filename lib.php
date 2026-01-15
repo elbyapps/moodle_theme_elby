@@ -432,6 +432,92 @@ function theme_elby_get_extra_scss($theme) {
     }
 
     /* ============================================= */
+    /* BOOST NAVBAR OVERRIDE - Apply elby styling to all pages */
+    /* ============================================= */
+
+    /* Main navbar container (Boost pages) */
+    nav.navbar.fixed-top {
+        background-color: #ffffff !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+        border-bottom: none !important;
+    }
+
+    /* Center the primary navigation */
+    nav.navbar.fixed-top .container-fluid {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    nav.navbar.fixed-top .primary-navigation {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    nav.navbar.fixed-top.bg-body {
+        --bs-bg-opacity: 1;
+        background-color: #ffffff !important;
+    }
+
+    /* Primary navigation links */
+    .navbar.fixed-top .primary-navigation .nav-link {
+        color: ' . $navcolor . ' !important;
+        font-weight: 600;
+        font-size: 0.9375rem;
+    }
+
+    .navbar.fixed-top .primary-navigation .nav-link:hover,
+    .navbar.fixed-top .primary-navigation .nav-link:focus {
+        color: #1e40af !important;
+    }
+
+    /* Active nav item */
+    .navbar.fixed-top .primary-navigation .nav-link.active {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Dropdown toggles in primary nav */
+    .navbar.fixed-top .primary-navigation .dropdown-toggle {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Navbar brand / site name */
+    .navbar.fixed-top .navbar-brand {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* User menu dropdown */
+    .navbar.fixed-top .usermenu .dropdown-toggle {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Notification/message icons */
+    .navbar.fixed-top .popover-region-toggle {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Edit mode switch */
+    .navbar.fixed-top .editmode-switch-form label {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Custom menu items */
+    .navbar.fixed-top .custom-menu .nav-link {
+        color: ' . $navcolor . ' !important;
+    }
+
+    /* Dividers */
+    .navbar.fixed-top .divider {
+        background-color: #e2e8f0 !important;
+    }
+
+    /* Navbar toggler icon for mobile (Boost) */
+    .navbar.fixed-top .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 30 30\'%3e%3cpath stroke=\'' . str_replace('#', '%23', $navcolor) . '\' stroke-linecap=\'round\' stroke-miterlimit=\'10\' stroke-width=\'2\' d=\'M4 7h22M4 15h22M4 23h22\'/%3e%3c/svg%3e") !important;
+    }
+
+    /* ============================================= */
     /* HERO SECTION - Edwiser Style */
     /* ============================================= */
 
@@ -1026,70 +1112,171 @@ function theme_elby_get_extra_scss($theme) {
     }
 
     /* =========================================== */
-    /* MARKETING BLOCKS SECTION - Edwiser Style   */
+    /* COURSE CATEGORIES SECTION - Udemy Style    */
     /* =========================================== */
 
-    .elby-marketing {
-        background: #fff;
+    .elby-categories {
+        background: #f8fafc;
         padding: 80px 0;
     }
 
     @media (max-width: 991.98px) {
-        .elby-marketing {
+        .elby-categories {
             padding: 60px 0;
         }
     }
 
-    .elby-marketing-card {
+    /* Breadcrumb navigation */
+    .elby-categories-breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        font-size: 0.9375rem;
+    }
+
+    .elby-categories-breadcrumb a {
+        color: ' . $navcolor . ';
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .elby-categories-breadcrumb a:hover {
+        text-decoration: underline;
+    }
+
+    .elby-categories-breadcrumb a.active {
+        color: #64748b;
+        pointer-events: none;
+    }
+
+    .elby-categories-breadcrumb .separator {
+        color: #94a3b8;
+        margin: 0 0.25rem;
+    }
+
+    /* Category card */
+    .elby-category-card {
+        display: block;
         background: #fff;
-        border-radius: 16px;
-        padding: 2.5rem 2rem;
-        text-align: center;
+        border-radius: 12px;
+        overflow: hidden;
         height: 100%;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
         border: 1px solid rgba(0, 0, 0, 0.04);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none !important;
     }
 
-    .elby-marketing-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    .elby-category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
     }
 
-    .elby-marketing-icon {
-        display: inline-flex;
+    /* Card image */
+    .elby-category-image {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 aspect ratio */
+        background: #e2e8f0;
+        overflow: hidden;
+    }
+
+    .elby-category-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .elby-category-card:hover .elby-category-image img {
+        transform: scale(1.05);
+    }
+
+    /* Placeholder for categories without images */
+    .elby-category-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, ' . $navcolor . ' 0%, #3b82f6 100%);
     }
 
-    .elby-marketing-icon i {
-        font-size: 3.5rem;
-        color: ' . $navcolor . ';
-        line-height: 1;
-        transition: transform 0.3s ease;
+    .elby-category-placeholder i {
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.9);
     }
 
-    .elby-marketing-card:hover .elby-marketing-icon i {
-        transform: scale(1.1);
+    /* Card content */
+    .elby-category-content {
+        padding: 1.25rem;
     }
 
-    .elby-marketing-title {
-        font-size: 1.125rem;
+    .elby-category-title {
+        font-size: 1rem;
         font-weight: 700;
         color: #1e293b;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .elby-category-card:hover .elby-category-title {
+        color: ' . $navcolor . ';
+    }
+
+    .elby-category-desc {
+        font-size: 0.875rem;
+        color: #64748b;
+        line-height: 1.5;
+        margin: 0 0 1rem 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Stats badges */
+    .elby-category-stats {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.8125rem;
+        color: #64748b;
+    }
+
+    .elby-stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+
+    .elby-stat-item i {
+        font-size: 0.875rem;
+        color: ' . $navcolor . ';
+    }
+
+    /* Empty state */
+    .elby-categories-empty {
+        padding: 3rem 1rem;
+    }
+
+    .elby-categories-empty i {
+        display: block;
         margin-bottom: 1rem;
     }
 
-    .elby-marketing-content {
-        font-size: 0.9375rem;
-        color: #64748b;
-        line-height: 1.7;
-        margin-bottom: 1.5rem;
-    }
-
+    /* Button styles (reusable) */
     .elby-btn-primary {
         display: inline-block;
         background: ' . $navcolor . ';
@@ -2712,6 +2899,8 @@ function theme_elby_pluginfile($course, $cm, $context, $filearea, $args, $forced
         'testimonial1image',
         'testimonial2image',
         'testimonial3image',
+        // Category placeholder image.
+        'categoriesplaceholder',
     ];
 
     if (in_array($filearea, $validareas)) {

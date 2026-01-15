@@ -114,21 +114,21 @@ $string['heroctabutton_desc'] = 'Text for the call-to-action button. Leave empty
 $string['heroctaurl'] = 'CTA button URL';
 $string['heroctaurl_desc'] = 'Link destination for the call-to-action button.';
 
-// Marketing settings.
-$string['marketingsettings'] = 'Marketing Blocks';
-$string['marketingenabled'] = 'Enable marketing blocks';
-$string['marketingenabled_desc'] = 'Show marketing/feature blocks on the frontpage.';
-$string['marketingtitle'] = 'Section title';
-$string['marketingtitle_desc'] = 'Heading for the marketing blocks section.';
-$string['marketingcount'] = 'Number of blocks';
-$string['marketingcount_desc'] = 'How many marketing blocks to display (1-6).';
-$string['marketingblock'] = 'Marketing block';
-$string['marketingicon'] = 'Icon';
-$string['marketingicon_desc'] = 'FontAwesome icon class (e.g., fa-graduation-cap, fa-book).';
-$string['marketingblocktitle'] = 'Block title';
-$string['marketingcontent'] = 'Block content';
-$string['marketingbuttontext'] = 'Button text';
-$string['marketingbuttonurl'] = 'Button URL';
+// Course categories settings.
+$string['categoriessettings'] = 'Course Categories';
+$string['categoriesenabled'] = 'Enable categories section';
+$string['categoriesenabled_desc'] = 'Show course categories as cards on the frontpage.';
+$string['categoriestitle'] = 'Section title';
+$string['categoriestitle_desc'] = 'Heading for the categories section.';
+$string['categoriessubtitle'] = 'Section subtitle';
+$string['categoriessubtitle_desc'] = 'Subtitle text below the section heading.';
+$string['categoriesplaceholder'] = 'Placeholder image';
+$string['categoriesplaceholder_desc'] = 'Default image for categories and courses without their own image.';
+$string['explorecourses'] = 'Explore Our Programs';
+$string['allcategories'] = 'All Categories';
+$string['subcategories'] = 'subcategories';
+$string['enrolled'] = 'enrolled';
+$string['nocategories'] = 'No categories available.';
 
 // Statistics settings.
 $string['statisticssettings'] = 'Statistics';

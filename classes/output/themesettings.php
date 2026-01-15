@@ -135,40 +135,296 @@ class themesettings {
     }
 
     /**
-     * Get marketing blocks data.
+     * Get course categories data for frontpage display.
      *
-     * @return array Marketing blocks template data.
+     * @return array Course categories template data.
      */
-    public function marketing_blocks(): array {
+    public function course_categories(): array {
+        global $DB, $CFG;
         $settings = $this->theme->settings;
 
-        if (empty($settings->marketingenabled)) {
-            return ['hasmarketing' => false];
+        if (empty($settings->categoriesenabled)) {
+            return ['hascategories' => false];
         }
 
-        $blocks = [];
-        $count = (int)($settings->marketingcount ?? 3);
+        // Get current category from URL parameter.
+        $categoryid = optional_param('category', 0, PARAM_INT);
 
-        for ($i = 1; $i <= $count; $i++) {
-            $title = $settings->{"marketing{$i}title"} ?? '';
-            if (!empty($title)) {
-                $blocks[] = [
-                    'icon' => $settings->{"marketing{$i}icon"} ?? 'fa-star',
-                    'title' => $title,
-                    'content' => format_text($settings->{"marketing{$i}content"} ?? '', FORMAT_HTML),
-                    'buttontext' => $settings->{"marketing{$i}buttontext"} ?? '',
-                    'buttonurl' => $settings->{"marketing{$i}buttonurl"} ?? '#',
-                    'hasbutton' => !empty($settings->{"marketing{$i}buttontext"}),
+        $items = [];
+        $breadcrumbs = [];
+        $currentcategory = null;
+        $showcourses = false;
+        $isfiltered = false;
+
+        if ($categoryid > 0) {
+            // Viewing a specific category - show its children or courses.
+            $isfiltered = true;
+            try {
+                $category = \core_course_category::get($categoryid);
+                $currentcategory = [
+                    'id' => $category->id,
+                    'name' => $category->name,
                 ];
+
+                // Build breadcrumb trail.
+                $breadcrumbs[] = [
+                    'name' => get_string('allcategories', 'theme_elby'),
+                    'url' => $CFG->wwwroot . '/?redirect=0',
+                    'active' => false,
+                    'last' => false,
+                ];
+
+                // Add parent categories to breadcrumb.
+                $parents = $category->get_parents();
+                foreach ($parents as $parentid) {
+                    $parent = \core_course_category::get($parentid);
+                    $breadcrumbs[] = [
+                        'name' => $parent->name,
+                        'url' => $CFG->wwwroot . '/?category=' . $parent->id . '&redirect=0',
+                        'active' => false,
+                        'last' => false,
+                    ];
+                }
+
+                // Current category in breadcrumb.
+                $breadcrumbs[] = [
+                    'name' => $category->name,
+                    'url' => $CFG->wwwroot . '/?category=' . $category->id . '&redirect=0',
+                    'active' => true,
+                    'last' => true,
+                ];
+
+                // Get subcategories.
+                $subcategories = $category->get_children();
+
+                if (!empty($subcategories)) {
+                    // Has subcategories - show them.
+                    foreach ($subcategories as $subcat) {
+                        if (!$subcat->visible) {
+                            continue;
+                        }
+                        $items[] = $this->format_category_item($subcat);
+                    }
+                } else {
+                    // No subcategories - show courses.
+                    $showcourses = true;
+                    $courses = $category->get_courses(['recursive' => false]);
+                    foreach ($courses as $course) {
+                        if (!$course->visible) {
+                            continue;
+                        }
+                        $items[] = $this->format_course_item($course);
+                    }
+                }
+            } catch (\Exception $e) {
+                // Invalid category, fall back to top-level.
+                $isfiltered = false;
+                $categoryid = 0;
+            }
+        }
+
+        if (!$isfiltered) {
+            // Show top-level categories.
+            $topcategories = \core_course_category::get(0)->get_children();
+            foreach ($topcategories as $cat) {
+                if (!$cat->visible) {
+                    continue;
+                }
+                $items[] = $this->format_category_item($cat);
             }
         }
 
         return [
-            'hasmarketing' => !empty($blocks),
-            'marketingtitle' => $settings->marketingtitle ?? '',
-            'marketingsubtitle' => $settings->marketingsubtitle ?? '',
-            'marketingblocks' => $blocks,
+            'hascategories' => !empty($items),
+            'categoriestitle' => $settings->categoriestitle ?? get_string('explorecourses', 'theme_elby'),
+            'categoriessubtitle' => $settings->categoriessubtitle ?? '',
+            'currentcategory' => $currentcategory,
+            'breadcrumbs' => $breadcrumbs,
+            'items' => $items,
+            'isfiltered' => $isfiltered,
+            'showcourses' => $showcourses,
         ];
+    }
+
+    /**
+     * Format a category for display as a card.
+     *
+     * @param \core_course_category $category The category object.
+     * @return array Formatted category data.
+     */
+    protected function format_category_item(\core_course_category $category): array {
+        global $DB, $CFG, $OUTPUT;
+
+        // Count courses in this category (including subcategories).
+        $coursecount = $category->get_courses_count();
+
+        // Count subcategories.
+        $subcatcount = count($category->get_children());
+
+        // Count enrolled users in all courses under this category.
+        $enrolledcount = $this->get_category_enrolled_count($category->id);
+
+        // Get category description (truncated).
+        $description = $category->description;
+        if (!empty($description)) {
+            $description = format_text($description, $category->descriptionformat);
+            $description = strip_tags($description);
+            if (strlen($description) > 120) {
+                $description = substr($description, 0, 117) . '...';
+            }
+        }
+
+        // Try to get category image (if available via customfields or stored file).
+        $thumbnail = $this->get_category_image($category);
+
+        // Determine item count label.
+        $itemcount = $subcatcount > 0 ? $subcatcount : $coursecount;
+        $itemcountlabel = $subcatcount > 0 ?
+            get_string('subcategories', 'theme_elby') :
+            get_string('courses');
+
+        return [
+            'id' => $category->id,
+            'type' => 'category',
+            'name' => $category->name,
+            'description' => $description,
+            'thumbnail' => $thumbnail,
+            'hasthumbnail' => !empty($thumbnail),
+            'itemcount' => $itemcount,
+            'itemcountlabel' => $itemcountlabel,
+            'enrolledcount' => $enrolledcount,
+            'url' => $CFG->wwwroot . '/?category=' . $category->id . '&redirect=0',
+            'icon' => 'fa-folder-open',
+        ];
+    }
+
+    /**
+     * Format a course for display as a card.
+     *
+     * @param \stdClass $course The course object.
+     * @return array Formatted course data.
+     */
+    protected function format_course_item($course): array {
+        global $DB, $CFG, $OUTPUT;
+
+        // Get enrolled user count.
+        $context = \context_course::instance($course->id);
+        $enrolledcount = count_enrolled_users($context);
+
+        // Get course description (truncated).
+        $description = $course->summary;
+        if (!empty($description)) {
+            $description = format_text($description, $course->summaryformat);
+            $description = strip_tags($description);
+            if (strlen($description) > 120) {
+                $description = substr($description, 0, 117) . '...';
+            }
+        }
+
+        // Get course image.
+        $thumbnail = $this->get_course_image($course);
+
+        // Count activities/sections as "lessons".
+        $modulecount = $DB->count_records('course_modules', ['course' => $course->id, 'visible' => 1]);
+
+        return [
+            'id' => $course->id,
+            'type' => 'course',
+            'name' => $course->fullname,
+            'description' => $description,
+            'thumbnail' => $thumbnail,
+            'hasthumbnail' => !empty($thumbnail),
+            'itemcount' => $modulecount,
+            'itemcountlabel' => get_string('activities'),
+            'enrolledcount' => $enrolledcount,
+            'url' => $CFG->wwwroot . '/course/view.php?id=' . $course->id,
+            'icon' => 'fa-book',
+        ];
+    }
+
+    /**
+     * Get total enrolled users count for a category.
+     *
+     * @param int $categoryid The category ID.
+     * @return int Total enrolled users.
+     */
+    protected function get_category_enrolled_count(int $categoryid): int {
+        global $DB;
+
+        $sql = "SELECT COUNT(DISTINCT ue.userid)
+                FROM {user_enrolments} ue
+                JOIN {enrol} e ON ue.enrolid = e.id
+                JOIN {course} c ON e.courseid = c.id
+                WHERE c.category = :categoryid
+                AND ue.status = 0";
+
+        return (int) $DB->count_records_sql($sql, ['categoryid' => $categoryid]);
+    }
+
+    /**
+     * Get category image URL.
+     *
+     * @param \core_course_category $category The category.
+     * @return string|null Image URL or null.
+     */
+    protected function get_category_image(\core_course_category $category): ?string {
+        global $CFG;
+
+        // Try to get image from category files (custom field or description files).
+        $context = \context_coursecat::instance($category->id);
+        $fs = get_file_storage();
+
+        // Check for image in description files.
+        $files = $fs->get_area_files($context->id, 'coursecat', 'description', 0, 'sortorder', false);
+        foreach ($files as $file) {
+            if ($file->is_valid_image()) {
+                return \moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    null,
+                    $file->get_filepath(),
+                    $file->get_filename()
+                )->out();
+            }
+        }
+
+        // Return placeholder from theme settings if available.
+        $placeholder = $this->theme->setting_file_url('categoriesplaceholder', 'categoriesplaceholder');
+        return $placeholder ?: null;
+    }
+
+    /**
+     * Get course image URL.
+     *
+     * @param \stdClass $course The course.
+     * @return string|null Image URL or null.
+     */
+    protected function get_course_image($course): ?string {
+        global $CFG;
+
+        // Wrap in core_course_list_element if not already.
+        if (!($course instanceof \core_course_list_element)) {
+            $course = new \core_course_list_element($course);
+        }
+
+        // Get course overview files (images).
+        foreach ($course->get_course_overviewfiles() as $file) {
+            if ($file->is_valid_image()) {
+                return \moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    null,
+                    $file->get_filepath(),
+                    $file->get_filename()
+                )->out();
+            }
+        }
+
+        // Return placeholder from theme settings if available.
+        $placeholder = $this->theme->setting_file_url('categoriesplaceholder', 'categoriesplaceholder');
+        return $placeholder ?: null;
     }
 
     /**
@@ -457,7 +713,7 @@ class themesettings {
     public function get_frontpage_data(): array {
         return array_merge(
             $this->hero_section(),
-            $this->marketing_blocks(),
+            $this->course_categories(),
             $this->announcements(),
             $this->campus_life(),
             $this->feature_section(),

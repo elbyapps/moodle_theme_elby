@@ -31,7 +31,9 @@
 
     {{! ============================================= }}
     {{! HERO SECTION - Edwiser Style with Image Collage }}
+    {{! Hidden when category filter is active }}
     {{! ============================================= }}
+    {{^isfiltered}}
     {{#hashero}}
     <section class="elby-hero" data-autorotate="{{heroautorotate}}" data-interval="{{herointerval}}" data-slidecount="{{heroslidecount}}">
         {{! Decorative Elements }}
@@ -127,43 +129,78 @@
         </div>
     </section>
     {{/hashero}}
+    {{/isfiltered}}
 
     {{! ============================================= }}
-    {{! MARKETING BLOCKS SECTION - Edwiser Style }}
+    {{! COURSE CATEGORIES SECTION - Udemy Style }}
     {{! ============================================= }}
-    {{#hasmarketing}}
-    <section class="elby-marketing elby-section">
+    {{#hascategories}}
+    <section class="elby-categories elby-section">
         <div class="container">
-            {{#marketingtitle}}
-            <div class="text-center mb-5">
-                <h2 class="elby-section-title">{{{ marketingtitle }}}</h2>
-                {{#marketingsubtitle}}
-                <p class="elby-section-subtitle">{{{ marketingsubtitle }}}</p>
-                {{/marketingsubtitle}}
-            </div>
-            {{/marketingtitle}}
+            {{! Breadcrumb navigation when filtered }}
+            {{#isfiltered}}
+            <nav class="elby-categories-breadcrumb mb-4">
+                {{#breadcrumbs}}
+                <a href="{{{url}}}" class="{{#active}}active{{/active}}">{{{name}}}</a>
+                {{^last}}<span class="separator">/</span>{{/last}}
+                {{/breadcrumbs}}
+            </nav>
+            {{/isfiltered}}
 
-            <div class="row g-4 justify-content-center">
-                {{#marketingblocks}}
-                <div class="col-lg-4 col-md-6">
-                    <div class="elby-marketing-card">
-                        <div class="elby-marketing-icon">
-                            <i class="fa {{{ icon }}}"></i>
-                        </div>
-                        <h3 class="elby-marketing-title">{{{ title }}}</h3>
-                        <p class="elby-marketing-content">{{{ content }}}</p>
-                        {{#hasbutton}}
-                        <a href="{{{ buttonurl }}}" class="btn elby-btn-outline">
-                            {{{ buttontext }}}
-                        </a>
-                        {{/hasbutton}}
-                    </div>
-                </div>
-                {{/marketingblocks}}
+            {{! Section header }}
+            <div class="text-center mb-5">
+                <h2 class="elby-section-title">{{{ categoriestitle }}}</h2>
+                {{#categoriessubtitle}}
+                <p class="elby-section-subtitle">{{{ categoriessubtitle }}}</p>
+                {{/categoriessubtitle}}
             </div>
+
+            {{! Category/Course cards grid }}
+            <div class="row g-4">
+                {{#items}}
+                <div class="col-lg-4 col-md-6">
+                    <a href="{{{url}}}" class="elby-category-card">
+                        <div class="elby-category-image">
+                            {{#hasthumbnail}}
+                            <img src="{{{thumbnail}}}" alt="{{{name}}}" loading="lazy">
+                            {{/hasthumbnail}}
+                            {{^hasthumbnail}}
+                            <div class="elby-category-placeholder">
+                                <i class="fa {{{icon}}}"></i>
+                            </div>
+                            {{/hasthumbnail}}
+                        </div>
+                        <div class="elby-category-content">
+                            <h3 class="elby-category-title">{{{name}}}</h3>
+                            {{#description}}
+                            <p class="elby-category-desc">{{{description}}}</p>
+                            {{/description}}
+                            <div class="elby-category-stats">
+                                <span class="elby-stat-item">
+                                    <i class="fa fa-book"></i>
+                                    {{{itemcount}}} {{{itemcountlabel}}}
+                                </span>
+                                <span class="elby-stat-item">
+                                    <i class="fa fa-users"></i>
+                                    {{{enrolledcount}}} {{#str}}enrolled, theme_elby{{/str}}
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {{/items}}
+            </div>
+
+            {{! Empty state }}
+            {{^items}}
+            <div class="elby-categories-empty text-center py-5">
+                <i class="fa fa-folder-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted">{{#str}}nocategories, theme_elby{{/str}}</p>
+            </div>
+            {{/items}}
         </div>
     </section>
-    {{/hasmarketing}}
+    {{/hascategories}}
 
     {{! ============================================= }}
     {{! ANNOUNCEMENTS SECTION - Edwiser Style }}

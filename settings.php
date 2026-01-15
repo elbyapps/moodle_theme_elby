@@ -309,65 +309,39 @@ if ($ADMIN->fulltree) {
     $settings->add($page);
 
     // =========================================================================
-    // TAB 5: MARKETING BLOCKS
+    // TAB 5: COURSE CATEGORIES
     // =========================================================================
-    $page = new admin_settingpage('theme_elby_marketing',
-        get_string('marketingsettings', 'theme_elby'));
+    $page = new admin_settingpage('theme_elby_categories',
+        get_string('categoriessettings', 'theme_elby'));
 
-    // Enable Marketing.
-    $name = 'theme_elby/marketingenabled';
-    $title = get_string('marketingenabled', 'theme_elby');
-    $description = get_string('marketingenabled_desc', 'theme_elby');
+    // Enable Categories Section.
+    $name = 'theme_elby/categoriesenabled';
+    $title = get_string('categoriesenabled', 'theme_elby');
+    $description = get_string('categoriesenabled_desc', 'theme_elby');
     $setting = new admin_setting_configcheckbox($name, $title, $description, 1);
     $page->add($setting);
 
-    // Marketing Section Title.
-    $name = 'theme_elby/marketingtitle';
-    $title = get_string('marketingtitle', 'theme_elby');
-    $description = get_string('marketingtitle_desc', 'theme_elby');
-    $setting = new admin_setting_configtext($name, $title, $description, 'Why Choose Us');
+    // Categories Section Title.
+    $name = 'theme_elby/categoriestitle';
+    $title = get_string('categoriestitle', 'theme_elby');
+    $description = get_string('categoriestitle_desc', 'theme_elby');
+    $setting = new admin_setting_configtext($name, $title, $description, 'Explore Our Programs');
     $page->add($setting);
 
-    // Marketing Block Count.
-    $name = 'theme_elby/marketingcount';
-    $title = get_string('marketingcount', 'theme_elby');
-    $description = get_string('marketingcount_desc', 'theme_elby');
-    $choices = ['1' => '1', '2' => '2', '3' => '3', '4' => '4', '5' => '5', '6' => '6'];
-    $setting = new admin_setting_configselect($name, $title, $description, '3', $choices);
+    // Categories Section Subtitle.
+    $name = 'theme_elby/categoriessubtitle';
+    $title = get_string('categoriessubtitle', 'theme_elby');
+    $description = get_string('categoriessubtitle_desc', 'theme_elby');
+    $setting = new admin_setting_configtext($name, $title, $description, 'Choose from our diverse range of courses');
     $page->add($setting);
 
-    // Marketing Blocks (1-3 for Phase 2).
-    for ($i = 1; $i <= 3; $i++) {
-        $page->add(new admin_setting_heading("theme_elby/marketingblock{$i}heading",
-            get_string('marketingblock', 'theme_elby') . ' ' . $i, ''));
-
-        $name = "theme_elby/marketing{$i}icon";
-        $title = get_string('marketingicon', 'theme_elby');
-        $description = get_string('marketingicon_desc', 'theme_elby');
-        $icons = ['fa-graduation-cap', 'fa-book', 'fa-users', 'fa-certificate', 'fa-laptop', 'fa-lightbulb'];
-        $setting = new admin_setting_configtext($name, $title, $description, $icons[($i - 1) % 6]);
-        $page->add($setting);
-
-        $name = "theme_elby/marketing{$i}title";
-        $title = get_string('marketingblocktitle', 'theme_elby');
-        $setting = new admin_setting_configtext($name, $title, '', '');
-        $page->add($setting);
-
-        $name = "theme_elby/marketing{$i}content";
-        $title = get_string('marketingcontent', 'theme_elby');
-        $setting = new admin_setting_configtextarea($name, $title, '', '');
-        $page->add($setting);
-
-        $name = "theme_elby/marketing{$i}buttontext";
-        $title = get_string('marketingbuttontext', 'theme_elby');
-        $setting = new admin_setting_configtext($name, $title, '', 'Learn More');
-        $page->add($setting);
-
-        $name = "theme_elby/marketing{$i}buttonurl";
-        $title = get_string('marketingbuttonurl', 'theme_elby');
-        $setting = new admin_setting_configtext($name, $title, '', '#');
-        $page->add($setting);
-    }
+    // Placeholder Image for categories without images.
+    $name = 'theme_elby/categoriesplaceholder';
+    $title = get_string('categoriesplaceholder', 'theme_elby');
+    $description = get_string('categoriesplaceholder_desc', 'theme_elby');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'categoriesplaceholder');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
 
     $settings->add($page);
 
