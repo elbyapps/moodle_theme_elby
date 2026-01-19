@@ -267,7 +267,16 @@ class themesettings {
         // Get category description (truncated).
         $description = $category->description;
         if (!empty($description)) {
-            $description = format_text($description, $category->descriptionformat);
+            $context = \context_coursecat::instance($category->id);
+            $description = file_rewrite_pluginfile_urls(
+                $description,
+                'pluginfile.php',
+                $context->id,
+                'coursecat',
+                'description',
+                null
+            );
+            $description = format_text($description, $category->descriptionformat, ['context' => $context]);
             $description = strip_tags($description);
             if (strlen($description) > 120) {
                 $description = substr($description, 0, 117) . '...';
