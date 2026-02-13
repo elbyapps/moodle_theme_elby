@@ -115,6 +115,11 @@ $THEME->layouts = [
         'regions' => [],
         'options' => ['langmenu' => true, 'nonavbar' => true, 'nofooter' => true],
     ],
+    'signup' => [
+        'file' => 'signup.php',
+        'regions' => [],
+        'options' => ['langmenu' => true, 'nonavbar' => true, 'nofooter' => true],
+    ],
     'admin' => [
         'file' => 'drawers.php',
         'regions' => ['side-pre'],

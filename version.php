@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'theme_elby';
-$plugin->version = 2025122800;
+$plugin->version = 2026021300;
 $plugin->requires = 2025041400;          // Moodle 5.0 minimum
 $plugin->supported = [500, 501];         // Moodle 5.0 - 5.1
 $plugin->maturity = MATURITY_ALPHA;
