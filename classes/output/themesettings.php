@@ -442,28 +442,62 @@ class themesettings {
      * @return array Statistics template data.
      */
     public function statistics(): array {
+        global $DB;
         $settings = $this->theme->settings;
 
         if (empty($settings->statsenabled)) {
             return ['hasstats' => false];
         }
 
-        $stats = [];
-        for ($i = 1; $i <= 4; $i++) {
-            $value = $settings->{"stat{$i}value"} ?? '';
-            if (!empty($value)) {
-                $stats[] = [
-                    'value' => $value,
-                    'suffix' => $settings->{"stat{$i}suffix"} ?? '',
-                    'label' => $settings->{"stat{$i}label"} ?? '',
-                    'icon' => $settings->{"stat{$i}icon"} ?? 'fa-star',
-                ];
-            }
+        // Count active users (exclude deleted, suspended, and guest).
+        $totalusers = $DB->count_records_select('user',
+            'deleted = 0 AND suspended = 0 AND id > 1');
+
+        // Count visible courses (exclude site course).
+        $totalcourses = $DB->count_records_select('course', 'id > 1');
+
+        // Count schools and students from elby_dashboard tables (if installed).
+        $totalschools = 0;
+        $totalstudents = 0;
+        $dbman = $DB->get_manager();
+        if ($dbman->table_exists('elby_schools')) {
+            $totalschools = $DB->count_records('elby_schools');
+        }
+        if ($dbman->table_exists('elby_sdms_users')) {
+            $totalstudents = $DB->count_records('elby_sdms_users',
+                ['user_type' => 'student']);
         }
 
+        $stats = [
+            [
+                'value' => $totalusers,
+                'suffix' => '+',
+                'label' => get_string('stat_users', 'theme_elby'),
+                'icon' => 'fa-users',
+            ],
+            [
+                'value' => $totalschools,
+                'suffix' => '',
+                'label' => get_string('stat_schools', 'theme_elby'),
+                'icon' => 'fa-building',
+            ],
+            [
+                'value' => $totalstudents,
+                'suffix' => '+',
+                'label' => get_string('stat_students', 'theme_elby'),
+                'icon' => 'fa-user-graduate',
+            ],
+            [
+                'value' => $totalcourses,
+                'suffix' => '',
+                'label' => get_string('stat_courses', 'theme_elby'),
+                'icon' => 'fa-book',
+            ],
+        ];
+
         return [
-            'hasstats' => !empty($stats),
-            'statstitle' => $settings->statstitle ?? '',
+            'hasstats' => true,
+            'statstitle' => $settings->statstitle ?? get_string('stat_section_title', 'theme_elby'),
             'statssubtitle' => $settings->statssubtitle ?? '',
             'stats' => $stats,
         ];

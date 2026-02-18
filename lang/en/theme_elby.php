@@ -309,5 +309,12 @@ $string['dashboardcardstyle_default'] = 'Default grid';
 $string['dashboardcardstyle_compact'] = 'Compact list';
 $string['dashboardcardstyle_detailed'] = 'Detailed cards';
 
+// Dynamic statistics strings.
+$string['stat_section_title'] = 'RTB by the Numbers';
+$string['stat_users'] = 'Users';
+$string['stat_schools'] = 'Schools';
+$string['stat_students'] = 'Students';
+$string['stat_courses'] = 'Courses';
+
 // Privacy.
 $string['privacy:metadata'] = 'The Elby theme does not store any personal data.';
