@@ -314,6 +314,7 @@ $string['stat_section_title'] = 'RTB by the Numbers';
 $string['stat_users'] = 'Users';
 $string['stat_schools'] = 'Schools';
 $string['stat_students'] = 'Students';
+$string['stat_teachers'] = 'Teachers';
 $string['stat_courses'] = 'Courses';
 
 // Privacy.

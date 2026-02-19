@@ -459,6 +459,7 @@ class themesettings {
         // Count schools and students from elby_dashboard tables (if installed).
         $totalschools = 0;
         $totalstudents = 0;
+        $totalteachers = 0;
         $dbman = $DB->get_manager();
         if ($dbman->table_exists('elby_schools')) {
             $totalschools = $DB->count_records('elby_schools');
@@ -466,6 +467,8 @@ class themesettings {
         if ($dbman->table_exists('elby_sdms_users')) {
             $totalstudents = $DB->count_records('elby_sdms_users',
                 ['user_type' => 'student']);
+            $totalteachers = $DB->count_records('elby_sdms_users',
+                ['user_type' => 'teacher']);
         }
 
         $stats = [
@@ -486,6 +489,12 @@ class themesettings {
                 'suffix' => '+',
                 'label' => get_string('stat_students', 'theme_elby'),
                 'icon' => 'fa-user-graduate',
+            ],
+            [
+                'value' => $totalteachers,
+                'suffix' => '+',
+                'label' => get_string('stat_teachers', 'theme_elby'),
+                'icon' => 'fa-chalkboard-teacher',
             ],
             [
                 'value' => $totalcourses,
