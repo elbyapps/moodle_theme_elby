@@ -1008,29 +1008,18 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
     padding-bottom: 60px;
 }
 
-.elby-stats-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    gap: 1rem;
-
-    @media (max-width: 767.98px) {
-        flex-wrap: wrap;
-    }
-}
-
-.elby-stats-grid-item {
+.elby-stats-col {
     flex: 1 1 0;
     min-width: 0;
 
     @media (max-width: 767.98px) {
-        flex: 0 0 45%;
+        flex: 0 0 33.333%;
     }
 }
 
 .elby-stat-item {
     text-align: center;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 .elby-stat-icon {
@@ -1038,18 +1027,18 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
 }
 
 .elby-stat-value {
-    font-size: 2.75rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: $elby-primary;
     line-height: 1;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
 
     @media (max-width: 767.98px) {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 
     @media (max-width: 575.98px) {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 }
 
