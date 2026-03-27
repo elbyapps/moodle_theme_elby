@@ -445,55 +445,62 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
     min-height: 600px;
     padding: 0;
     background: #1a1a2e;
-    align-items: stretch;
+    width: 100%;
 
     @media (max-width: 991.98px) {
         min-height: 450px;
+        padding: 0;
     }
 
     @media (max-width: 575.98px) {
         min-height: 350px;
     }
-}
 
-.elby-hero-fullwidth-slides {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-}
+    .elby-hero-fullwidth-slides {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
 
-.elby-hero-fullwidth-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: none;
-    align-items: center;
-
-    &.active {
+    .elby-hero-fullwidth-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
         display: flex;
-    }
-}
+        align-items: center;
 
-.elby-hero-fullwidth-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 35%, rgba(0, 0, 0, 0.2) 100%);
-    z-index: 1;
-}
-
-.elby-hero-fullwidth-content {
-    max-width: 620px;
-    padding: 80px 0;
-
-    @media (max-width: 991.98px) {
-        padding: 60px 0;
+        &.active {
+            opacity: 1;
+            visibility: visible;
+        }
     }
 
-    @media (max-width: 575.98px) {
-        padding: 40px 0;
-        max-width: 100%;
+    .elby-hero-fullwidth-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 35%, rgba(0, 0, 0, 0.2) 100%);
+        z-index: 1;
+    }
+
+    .elby-hero-fullwidth-content {
+        max-width: 620px;
+        padding: 120px 0 80px;
+        position: relative;
+        z-index: 2;
+
+        @media (max-width: 991.98px) {
+            padding: 100px 0 60px;
+        }
+
+        @media (max-width: 575.98px) {
+            padding: 80px 0 50px;
+            max-width: 100%;
+        }
     }
 
     .elby-hero-heading {
@@ -524,6 +531,7 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 1.75rem;
+        max-width: 500px;
 
         @media (max-width: 575.98px) {
             font-size: 0.9rem;
@@ -535,11 +543,10 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
         font-size: 1rem;
         font-weight: 600;
         border-radius: 6px;
+        margin-bottom: 0;
     }
-}
 
-// Navigation overrides for fullwidth style
-.elby-hero--fullwidth {
+    // Navigation overrides
     .elby-hero-nav {
         border-color: rgba(255, 255, 255, 0.5);
         color: #fff;
