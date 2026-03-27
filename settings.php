@@ -218,6 +218,18 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcheckbox($name, $title, $description, 1);
     $page->add($setting);
 
+    // Hero Style.
+    $name = 'theme_elby/herostyle';
+    $title = get_string('herostyle', 'theme_elby');
+    $description = get_string('herostyle_desc', 'theme_elby');
+    $choices = [
+        'collage' => get_string('herostyle_collage', 'theme_elby'),
+        'fullwidth' => get_string('herostyle_fullwidth', 'theme_elby'),
+    ];
+    $setting = new admin_setting_configselect($name, $title, $description, 'collage', $choices);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
     // Hero Carousel Settings Heading.
     $page->add(new admin_setting_heading('theme_elby/herocarouselheading',
         get_string('herocarouselsettings', 'theme_elby'), ''));

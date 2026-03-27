@@ -437,6 +437,137 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
     }
 }
 
+// ============================================================================
+// HERO SECTION - Full-width Background Style
+// ============================================================================
+
+.elby-hero--fullwidth {
+    min-height: 600px;
+    padding: 0;
+    background: #1a1a2e;
+    align-items: stretch;
+
+    @media (max-width: 991.98px) {
+        min-height: 450px;
+    }
+
+    @media (max-width: 575.98px) {
+        min-height: 350px;
+    }
+}
+
+.elby-hero-fullwidth-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.elby-hero-fullwidth-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: none;
+    align-items: center;
+
+    &.active {
+        display: flex;
+    }
+}
+
+.elby-hero-fullwidth-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 35%, rgba(0, 0, 0, 0.2) 100%);
+    z-index: 1;
+}
+
+.elby-hero-fullwidth-content {
+    max-width: 620px;
+    padding: 80px 0;
+
+    @media (max-width: 991.98px) {
+        padding: 60px 0;
+    }
+
+    @media (max-width: 575.98px) {
+        padding: 40px 0;
+        max-width: 100%;
+    }
+
+    .elby-hero-heading {
+        color: #fff;
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        line-height: 1.2;
+        margin-bottom: 1.25rem;
+
+        @media (max-width: 1199.98px) {
+            font-size: 2.5rem;
+        }
+
+        @media (max-width: 767.98px) {
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+        }
+
+        @media (max-width: 575.98px) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .elby-hero-subheading {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.75rem;
+
+        @media (max-width: 575.98px) {
+            font-size: 0.9rem;
+        }
+    }
+
+    .elby-hero-cta {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+    }
+}
+
+// Navigation overrides for fullwidth style
+.elby-hero--fullwidth {
+    .elby-hero-nav {
+        border-color: rgba(255, 255, 255, 0.5);
+        color: #fff;
+        z-index: 3;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #fff;
+        }
+    }
+
+    .elby-hero-pagination {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+    }
+
+    .elby-hero-dot {
+        background: rgba(255, 255, 255, 0.5);
+
+        &.active {
+            background: #fff;
+        }
+    }
+}
+
 // Hero Feature Cards (Marketing Blocks)
 .elby-hero-features {
     display: flex;

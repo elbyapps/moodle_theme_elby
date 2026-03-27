@@ -30,30 +30,29 @@
     </header>
 
     {{! ============================================= }}
-    {{! HERO SECTION - Edwiser Style with Image Collage }}
+    {{! HERO SECTION }}
     {{! Hidden when category filter is active }}
     {{! ============================================= }}
     {{^isfiltered}}
     {{#hashero}}
+
+    {{! ---- Collage Style (default) ---- }}
+    {{#herostyle_collage}}
     <section class="elby-hero" data-autorotate="{{heroautorotate}}" data-interval="{{herointerval}}" data-slidecount="{{heroslidecount}}">
         {{! Decorative Elements }}
         <div class="elby-hero-decorations">
-            {{! Colored circles/blobs }}
             <div class="elby-deco-blob elby-deco-blob-1"></div>
             <div class="elby-deco-blob elby-deco-blob-2"></div>
             <div class="elby-deco-blob elby-deco-blob-3"></div>
             <div class="elby-deco-blob elby-deco-blob-4"></div>
-            {{! Dot patterns }}
             <div class="elby-deco-dots elby-deco-dots-1"></div>
             <div class="elby-deco-dots elby-deco-dots-2"></div>
             <div class="elby-deco-dots elby-deco-dots-3"></div>
-            {{! Small accent dots }}
             <div class="elby-deco-dot elby-deco-dot-1"></div>
             <div class="elby-deco-dot elby-deco-dot-2"></div>
             <div class="elby-deco-dot elby-deco-dot-3"></div>
         </div>
 
-        {{! Navigation Arrows (only show if multiple slides) }}
         {{#hasmultipleslides}}
         <button class="elby-hero-nav elby-hero-nav-prev" aria-label="{{#str}}previousslide, theme_elby{{/str}}">
             <i class="fa fa-chevron-left"></i>
@@ -65,7 +64,6 @@
 
         <div class="container">
             <div class="row align-items-center">
-                {{! Left - Content Slides }}
                 <div class="col-lg-5 col-xl-5">
                     <div class="elby-hero-slides-content">
                         {{#heroslides}}
@@ -83,7 +81,6 @@
                         {{/heroslides}}
                     </div>
 
-                    {{! Pagination Dots (only show if multiple slides) }}
                     {{#hasmultipleslides}}
                     <div class="elby-hero-pagination">
                         {{#heroslides}}
@@ -93,12 +90,10 @@
                     {{/hasmultipleslides}}
                 </div>
 
-                {{! Right - Hero Image Collage Slides }}
                 <div class="col-lg-7 col-xl-7 d-none d-lg-block">
                     <div class="elby-hero-slides-images">
                         {{#heroslides}}
                         <div class="elby-hero-collage {{#active}}active{{/active}}" data-slide="{{index}}">
-                            {{! Main blob-shaped image }}
                             <div class="elby-hero-main-image">
                                 {{#hasmainimage}}
                                 <img src="{{{ mainimage }}}" alt="" class="elby-hero-image-blob">
@@ -108,7 +103,6 @@
                                 {{/hasmainimage}}
                             </div>
 
-                            {{! Secondary circular image }}
                             <div class="elby-hero-secondary-image">
                                 {{#hassecondaryimage}}
                                 <img src="{{{ secondaryimage }}}" alt="" class="elby-hero-image-circle">
@@ -118,7 +112,6 @@
                                 {{/hassecondaryimage}}
                             </div>
 
-                            {{! Background decorative shapes for images }}
                             <div class="elby-hero-shape elby-hero-shape-1"></div>
                             <div class="elby-hero-shape elby-hero-shape-2"></div>
                         </div>
@@ -128,6 +121,47 @@
             </div>
         </div>
     </section>
+    {{/herostyle_collage}}
+
+    {{! ---- Full-width Background Style ---- }}
+    {{#herostyle_fullwidth}}
+    <section class="elby-hero elby-hero--fullwidth" data-autorotate="{{heroautorotate}}" data-interval="{{herointerval}}" data-slidecount="{{heroslidecount}}">
+        <div class="elby-hero-fullwidth-slides">
+            {{#heroslides}}
+            <div class="elby-hero-slide elby-hero-fullwidth-slide {{#active}}active{{/active}}" data-slide="{{index}}"
+                 {{#hasmainimage}}style="background-image: url('{{{mainimage}}}')"{{/hasmainimage}}>
+                <div class="elby-hero-fullwidth-overlay"></div>
+                <div class="container position-relative" style="z-index: 2;">
+                    <div class="elby-hero-fullwidth-content">
+                        <h1 class="elby-hero-heading">{{{ heading }}}</h1>
+                        <div class="elby-hero-subheading">{{{ subheading }}}</div>
+                        {{#hascta}}
+                        <a href="{{{ ctaurl }}}" class="btn elby-btn-primary elby-hero-cta">
+                            {{{ ctabutton }}}
+                        </a>
+                        {{/hascta}}
+                    </div>
+                </div>
+            </div>
+            {{/heroslides}}
+        </div>
+
+        {{#hasmultipleslides}}
+        <button class="elby-hero-nav elby-hero-nav-prev" aria-label="{{#str}}previousslide, theme_elby{{/str}}">
+            <i class="fa fa-chevron-left"></i>
+        </button>
+        <button class="elby-hero-nav elby-hero-nav-next" aria-label="{{#str}}nextslide, theme_elby{{/str}}">
+            <i class="fa fa-chevron-right"></i>
+        </button>
+        <div class="elby-hero-pagination">
+            {{#heroslides}}
+            <button class="elby-hero-dot {{#active}}active{{/active}}" data-slide="{{index}}" aria-label="{{#str}}gotoslide, theme_elby, {{slidenum}}{{/str}}"></button>
+            {{/heroslides}}
+        </div>
+        {{/hasmultipleslides}}
+    </section>
+    {{/herostyle_fullwidth}}
+
     {{/hashero}}
     {{/isfiltered}}
 

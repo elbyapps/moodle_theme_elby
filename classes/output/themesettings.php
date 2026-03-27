@@ -56,6 +56,7 @@ class themesettings {
         }
 
         // Get carousel settings.
+        $herostyle = $settings->herostyle ?? 'collage';
         $slidecount = max(1, min(10, (int)($settings->heroslidecount ?? 1)));
         $autorotate = !empty($settings->heroautorotate);
         $interval = (int)($settings->herointerval ?? 5000);
@@ -116,6 +117,9 @@ class themesettings {
 
         return [
             'hashero' => true,
+            'herostyle' => $herostyle,
+            'herostyle_collage' => ($herostyle === 'collage'),
+            'herostyle_fullwidth' => ($herostyle === 'fullwidth'),
             'heroslides' => $slides,
             'heroslidecount' => count($slides),
             'hasmultipleslides' => $hasmultipleslides,
