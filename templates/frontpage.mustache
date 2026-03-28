@@ -169,25 +169,40 @@
     {{! COURSE CATEGORIES SECTION - Udemy Style }}
     {{! ============================================= }}
     {{#hascategories}}
+    {{! Category header banner when filtered }}
+    {{#isfiltered}}
+    <div class="elby-category-header">
+        {{#hascategoryimage}}
+        <div class="elby-category-header-image">
+            <img src="{{{categoryimage}}}" alt="{{#currentcategory}}{{{name}}}{{/currentcategory}}">
+        </div>
+        {{/hascategoryimage}}
+        <div class="container">
+            <div class="elby-category-header-content">
+                <nav class="elby-categories-breadcrumb mb-3">
+                    {{#breadcrumbs}}
+                    <a href="{{{url}}}" class="{{#active}}active{{/active}}">{{{name}}}</a>
+                    {{^last}}<span class="separator">/</span>{{/last}}
+                    {{/breadcrumbs}}
+                </nav>
+                <h2 class="elby-category-header-title">{{#currentcategory}}{{{name}}}{{/currentcategory}}</h2>
+                {{#categorydescription}}<p class="elby-category-header-desc">{{{categorydescription}}}</p>{{/categorydescription}}
+            </div>
+        </div>
+    </div>
+    {{/isfiltered}}
     <section class="elby-categories elby-section">
         <div class="container">
-            {{! Breadcrumb navigation when filtered }}
-            {{#isfiltered}}
-            <nav class="elby-categories-breadcrumb mb-4">
-                {{#breadcrumbs}}
-                <a href="{{{url}}}" class="{{#active}}active{{/active}}">{{{name}}}</a>
-                {{^last}}<span class="separator">/</span>{{/last}}
-                {{/breadcrumbs}}
-            </nav>
-            {{/isfiltered}}
 
             {{! Section header }}
+            {{^isfiltered}}
             <div class="text-center mb-5">
                 <h2 class="elby-section-title">{{{ categoriestitle }}}</h2>
                 {{#categoriessubtitle}}
                 <p class="elby-section-subtitle">{{{ categoriessubtitle }}}</p>
                 {{/categoriessubtitle}}
             </div>
+            {{/isfiltered}}
 
             {{! Category/Course cards grid }}
             <div class="row g-4">
@@ -227,9 +242,13 @@
 
             {{! Empty state }}
             {{^items}}
-            <div class="elby-categories-empty text-center py-5">
-                <i class="fa fa-folder-open fa-3x text-muted mb-3"></i>
-                <p class="text-muted">{{#str}}nocategories, theme_elby{{/str}}</p>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="elby-categories-empty text-center py-5">
+                        <i class="fa fa-folder-open fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">{{#str}}nocontent, theme_elby{{/str}}</p>
+                    </div>
+                </div>
             </div>
             {{/items}}
         </div>

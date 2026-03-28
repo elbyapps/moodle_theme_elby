@@ -185,9 +185,5 @@ $warning-outline: #d97706;
 // ============================================================================
 // SECTION 6: THEME PARTIAL IMPORTS
 // ============================================================================
-
-@import "../_variables";
-@import "../_navigation";
-@import "../_frontpage";
-@import "../_login";
-@import "../_footer";
+// Partials are loaded directly via file_get_contents() in lib.php
+// to avoid @import resolution issues with Moodle's SCSS compiler.

@@ -347,6 +347,24 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configtext($name, $title, $description, 'Choose from our diverse range of courses');
     $page->add($setting);
 
+    // Category Header Background Color.
+    $name = 'theme_elby/categoryheaderbg';
+    $title = get_string('categoryheaderbg', 'theme_elby');
+    $description = get_string('categoryheaderbg_desc', 'theme_elby');
+    $default = '#1e293b';
+    $setting = new admin_setting_configcolourpicker($name, $title, $description, $default);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Category Header Text Color.
+    $name = 'theme_elby/categoryheadertextcolor';
+    $title = get_string('categoryheadertextcolor', 'theme_elby');
+    $description = get_string('categoryheadertextcolor_desc', 'theme_elby');
+    $default = '#ffffff';
+    $setting = new admin_setting_configcolourpicker($name, $title, $description, $default);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
     // Placeholder Image for categories without images.
     $name = 'theme_elby/categoriesplaceholder';
     $title = get_string('categoriesplaceholder', 'theme_elby');

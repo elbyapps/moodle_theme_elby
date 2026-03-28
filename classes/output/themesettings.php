@@ -165,9 +165,13 @@ class themesettings {
             $isfiltered = true;
             try {
                 $category = \core_course_category::get($categoryid);
+                $categoryimage = $this->get_category_image($category);
                 $currentcategory = [
                     'id' => $category->id,
                     'name' => $category->name,
+                    'description' => $category->description ? trim(strip_tags(format_text($category->description, $category->descriptionformat, ['context' => \context_coursecat::instance($category->id)]))) : '',
+                    'image' => $categoryimage,
+                    'hasimage' => !empty($categoryimage),
                 ];
 
                 // Build breadcrumb trail.
@@ -239,10 +243,13 @@ class themesettings {
         }
 
         return [
-            'hascategories' => !empty($items),
+            'hascategories' => !empty($items) || $isfiltered,
             'categoriestitle' => $settings->categoriestitle ?? get_string('explorecourses', 'theme_elby'),
             'categoriessubtitle' => $settings->categoriessubtitle ?? '',
             'currentcategory' => $currentcategory,
+            'categoryimage' => $currentcategory['image'] ?? '',
+            'hascategoryimage' => !empty($currentcategory['hasimage']),
+            'categorydescription' => $currentcategory['description'] ?? '',
             'breadcrumbs' => $breadcrumbs,
             'items' => $items,
             'isfiltered' => $isfiltered,

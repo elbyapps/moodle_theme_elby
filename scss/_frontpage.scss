@@ -464,7 +464,7 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
         z-index: 0;
     }
 
-    .elby-hero-fullwidth-slide {
+    .elby-hero-slide.elby-hero-fullwidth-slide {
         position: absolute;
         inset: 0;
         background-size: cover;
@@ -472,13 +472,20 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
         background-repeat: no-repeat;
         opacity: 0;
         visibility: hidden;
+        transform: none;
         transition: opacity 0.5s ease, visibility 0.5s ease;
         display: flex;
         align-items: center;
 
         &.active {
+            position: absolute;
             opacity: 1;
             visibility: visible;
+            transform: none;
+        }
+
+        &.fade-out {
+            transform: none;
         }
     }
 
@@ -1362,5 +1369,82 @@ $elby-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0
 
     .elby-event-month {
         margin-top: 0;
+    }
+}
+
+// ============================================================================
+// Category Header Banner (filtered view)
+// ============================================================================
+
+.elby-category-header {
+    position: relative;
+    background: #1e293b;
+    color: #fff;
+    overflow: hidden;
+}
+
+.elby-category-header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.4;
+    }
+}
+
+.elby-category-header-content {
+    position: relative;
+    z-index: 1;
+    padding: 3rem 0;
+}
+
+.elby-category-header .elby-categories-breadcrumb a {
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover {
+        color: #fff;
+    }
+
+    &.active {
+        color: rgba(255, 255, 255, 0.6);
+    }
+}
+
+.elby-category-header .elby-categories-breadcrumb .separator {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.elby-category-header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+}
+
+.elby-category-header-desc {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0.5rem 0 0 0;
+    line-height: 1.6;
+    max-width: 600px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 767.98px) {
+    .elby-category-header-content {
+        padding: 2rem 0;
+    }
+
+    .elby-category-header-title {
+        font-size: 1.5rem;
     }
 }

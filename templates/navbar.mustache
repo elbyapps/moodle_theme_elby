@@ -30,9 +30,11 @@
             {{#haslogo}}
             <img src="{{{ logourl }}}" alt="{{{ sitename }}}" class="elby-logo">
             {{/haslogo}}
+            {{^haslogo}}
             {{#showsitename}}
             <span class="elby-sitename">{{{ sitename }}}</span>
             {{/showsitename}}
+            {{/haslogo}}
         </a>
 
         {{! Mobile Toggle }}

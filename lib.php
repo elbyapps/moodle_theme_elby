@@ -62,11 +62,19 @@ function theme_elby_get_main_scss_content($theme) {
     $scss = '';
     $themedir = __DIR__;
 
-    // Always use parent boost theme's preset for proper Bootstrap compilation.
-    // The boost theme handles all the complex SCSS import paths correctly.
-    $boostpreset = $CFG->dirroot . '/theme/boost/scss/preset/default.scss';
+    // Load Elby's preset (includes Bootstrap, Moodle, FontAwesome via @import).
+    $boostpreset = $themedir . '/scss/preset/default.scss';
     if (file_exists($boostpreset)) {
         $scss .= file_get_contents($boostpreset);
+    }
+
+    // Load theme partials directly (bypassing @import which may not resolve).
+    $partials = ['_variables', '_navigation', '_frontpage', '_login', '_footer'];
+    foreach ($partials as $partial) {
+        $partialfile = $themedir . '/scss/' . $partial . '.scss';
+        if (file_exists($partialfile)) {
+            $scss .= "\n" . file_get_contents($partialfile);
+        }
     }
 
     // Load our custom post styles.
@@ -210,7 +218,13 @@ function theme_elby_get_extra_scss($theme) {
     .elby-navbar {
         background-color: #ffffff !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        padding: 1rem 0;
+        padding: 2rem 0;
+    }
+
+    nav.navbar.fixed-top.elby-navbar {
+        padding-top: 1.5rem !important;
+        padding-bottom: 1.5rem !important;
+        height: auto !important;
     }
 
     /* Logo and Brand - Left side */
@@ -223,7 +237,7 @@ function theme_elby_get_extra_scss($theme) {
     }
 
     .elby-logo {
-        max-height: 40px;
+        max-height: 80px;
         width: auto;
     }
 
@@ -1112,6 +1126,169 @@ function theme_elby_get_extra_scss($theme) {
     }
 
     /* =========================================== */
+    /* FULLWIDTH HERO VARIANT                     */
+    /* =========================================== */
+
+    .elby-hero.elby-hero--fullwidth {
+        min-height: 600px;
+        padding: 0;
+        background: #1a1a2e;
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: calc(-50vw + 50%);
+    }
+
+    @media (max-width: 991.98px) {
+        .elby-hero.elby-hero--fullwidth {
+            min-height: 450px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .elby-hero.elby-hero--fullwidth {
+            min-height: 350px;
+        }
+    }
+
+    .elby-hero-fullwidth-slides {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    .elby-hero--fullwidth .elby-hero-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        transform: none;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        display: flex;
+        align-items: center;
+    }
+
+    .elby-hero--fullwidth .elby-hero-slide.active {
+        position: absolute;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .elby-hero--fullwidth .elby-hero-slide.fade-out {
+        transform: none;
+    }
+
+    .elby-hero--fullwidth .elby-hero-slide.fade-in {
+        transform: none;
+    }
+
+    .elby-hero-fullwidth-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 35%, rgba(0, 0, 0, 0.2) 100%);
+        z-index: 1;
+    }
+
+    .elby-hero-fullwidth-content {
+        max-width: 620px;
+        padding: 120px 0 80px;
+        position: relative;
+        z-index: 2;
+    }
+
+    @media (max-width: 991.98px) {
+        .elby-hero-fullwidth-content {
+            padding: 100px 0 60px;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .elby-hero-fullwidth-content {
+            padding: 80px 0 50px;
+            max-width: 100%;
+        }
+    }
+
+    .elby-hero--fullwidth .elby-hero-heading {
+        color: #fff;
+        font-size: 3rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        line-height: 1.2;
+        margin-bottom: 1.25rem;
+    }
+
+    @media (max-width: 1199.98px) {
+        .elby-hero--fullwidth .elby-hero-heading {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+        .elby-hero--fullwidth .elby-hero-heading {
+            font-size: 2rem;
+            letter-spacing: 0.1em;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .elby-hero--fullwidth .elby-hero-heading {
+            font-size: 1.5rem;
+        }
+    }
+
+    .elby-hero--fullwidth .elby-hero-subheading {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.75rem;
+        max-width: 500px;
+    }
+
+    @media (max-width: 575.98px) {
+        .elby-hero--fullwidth .elby-hero-subheading {
+            font-size: 0.9rem;
+        }
+    }
+
+    .elby-hero--fullwidth .elby-hero-cta {
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        margin-bottom: 0;
+    }
+
+    .elby-hero--fullwidth .elby-hero-nav {
+        border-color: rgba(255, 255, 255, 0.5);
+        color: #fff;
+        z-index: 3;
+    }
+
+    .elby-hero--fullwidth .elby-hero-nav:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: #fff;
+    }
+
+    .elby-hero--fullwidth .elby-hero-pagination {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+    }
+
+    .elby-hero--fullwidth .elby-hero-dot {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .elby-hero--fullwidth .elby-hero-dot.active {
+        background: #fff;
+    }
+
+    /* =========================================== */
     /* COURSE CATEGORIES SECTION - Udemy Style    */
     /* =========================================== */
 
@@ -1153,6 +1330,95 @@ function theme_elby_get_extra_scss($theme) {
     .elby-categories-breadcrumb .separator {
         color: #94a3b8;
         margin: 0 0.25rem;
+    }
+
+    /* Category header - full width banner */
+    .elby-category-header {
+        position: relative;
+        background: #1e293b !important;
+        color: #fff !important;
+        overflow: hidden;
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+    }
+
+    .elby-category-header-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .elby-category-header-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.3;
+    }
+
+    .elby-category-header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+        z-index: 0;
+    }
+
+    .elby-category-header > .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .elby-category-header-content {
+        padding: 3rem 0;
+    }
+
+    .elby-category-header .elby-categories-breadcrumb a {
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    .elby-category-header .elby-categories-breadcrumb a:hover {
+        color: #fff !important;
+    }
+
+    .elby-category-header .elby-categories-breadcrumb a.active {
+        color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .elby-category-header .elby-categories-breadcrumb .separator {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    .elby-category-header-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+        color: #fff !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .elby-category-header-desc {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.85) !important;
+        margin: 0.5rem 0 0 0;
+        line-height: 1.6;
+        max-width: 600px;
+    }
+
+    @media (max-width: 767.98px) {
+        .elby-category-header-content {
+            padding: 2rem 0;
+        }
+
+        .elby-category-header-title {
+            font-size: 1.5rem;
+        }
     }
 
     /* Category card */

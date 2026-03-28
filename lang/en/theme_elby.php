@@ -133,6 +133,7 @@ $string['allcategories'] = 'All Categories';
 $string['subcategories'] = 'subcategories';
 $string['enrolled'] = 'enrolled';
 $string['nocategories'] = 'No categories available.';
+$string['nocontent'] = 'No content found in this category.';
 
 // Statistics settings.
 $string['statisticssettings'] = 'Statistics';
