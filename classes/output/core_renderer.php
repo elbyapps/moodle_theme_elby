@@ -57,19 +57,12 @@ class core_renderer extends boost_core_renderer {
     public function get_compact_logo_url($maxwidth = null, $maxheight = null) {
         $logo = $this->page->theme->setting_file_url('logocompact', 'logocompact');
         if (!empty($logo)) {
-            // setting_file_url returns full URL, extract path only for moodle_url
-            $path = parse_url($logo, PHP_URL_PATH);
-            if ($path) {
-                return new moodle_url($path);
-            }
+            return new moodle_url($logo);
         }
         // Fall back to main logo if compact not set.
         $mainlogo = $this->page->theme->setting_file_url('logo', 'logo');
         if (!empty($mainlogo)) {
-            $path = parse_url($mainlogo, PHP_URL_PATH);
-            if ($path) {
-                return new moodle_url($path);
-            }
+            return new moodle_url($mainlogo);
         }
         return parent::get_compact_logo_url($maxwidth, $maxheight);
     }
@@ -84,11 +77,7 @@ class core_renderer extends boost_core_renderer {
     public function get_logo_url($maxwidth = null, $maxheight = null) {
         $logo = $this->page->theme->setting_file_url('logo', 'logo');
         if (!empty($logo)) {
-            // setting_file_url returns full URL, extract path only for moodle_url
-            $path = parse_url($logo, PHP_URL_PATH);
-            if ($path) {
-                return new moodle_url($path);
-            }
+            return new moodle_url($logo);
         }
         return parent::get_logo_url($maxwidth, $maxheight);
     }
