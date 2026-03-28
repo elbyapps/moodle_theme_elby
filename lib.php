@@ -207,6 +207,10 @@ function theme_elby_get_extra_scss($theme) {
     // Get navigation color from brand color setting (default to dark blue).
     $navcolor = get_config('theme_elby', 'brandcolor') ?: '#1e3a8a';
 
+    // Category header colors.
+    $categoryheaderbg = get_config('theme_elby', 'categoryheaderbg') ?: '#1e293b';
+    $categoryheadertextcolor = get_config('theme_elby', 'categoryheadertextcolor') ?: '#ffffff';
+
     // Navigation styles (added directly to ensure compilation).
     $scss .= '
     /* Header wrapper */
@@ -1335,8 +1339,8 @@ function theme_elby_get_extra_scss($theme) {
     /* Category header - full width banner */
     .elby-category-header {
         position: relative;
-        background: #1e293b !important;
-        color: #fff !important;
+        background: ' . $categoryheaderbg . ' !important;
+        color: ' . $categoryheadertextcolor . ' !important;
         overflow: hidden;
         min-height: 200px;
         display: flex;
@@ -1380,32 +1384,35 @@ function theme_elby_get_extra_scss($theme) {
     }
 
     .elby-category-header .elby-categories-breadcrumb a {
-        color: rgba(255, 255, 255, 0.8) !important;
+        color: ' . $categoryheadertextcolor . ' !important;
+        opacity: 0.8;
     }
 
     .elby-category-header .elby-categories-breadcrumb a:hover {
-        color: #fff !important;
+        opacity: 1;
     }
 
     .elby-category-header .elby-categories-breadcrumb a.active {
-        color: rgba(255, 255, 255, 0.6) !important;
+        opacity: 0.6;
     }
 
     .elby-category-header .elby-categories-breadcrumb .separator {
-        color: rgba(255, 255, 255, 0.5) !important;
+        color: ' . $categoryheadertextcolor . ' !important;
+        opacity: 0.5;
     }
 
     .elby-category-header-title {
         font-size: 2rem;
         font-weight: 700;
         margin: 0;
-        color: #fff !important;
+        color: ' . $categoryheadertextcolor . ' !important;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
     .elby-category-header-desc {
         font-size: 1rem;
-        color: rgba(255, 255, 255, 0.85) !important;
+        color: ' . $categoryheadertextcolor . ' !important;
+        opacity: 0.85;
         margin: 0.5rem 0 0 0;
         line-height: 1.6;
         max-width: 600px;
