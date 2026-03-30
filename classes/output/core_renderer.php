@@ -77,7 +77,12 @@ class core_renderer extends boost_core_renderer {
     public function get_logo_url($maxwidth = null, $maxheight = null) {
         $logo = $this->page->theme->setting_file_url('logo', 'logo');
         if (!empty($logo)) {
-            return $logo;
+            // setting_file_url returns a protocol-relative URL string; parse out the path
+            // so we can return a proper moodle_url object as callers expect.
+            global $CFG;
+            $parsed = parse_url($logo);
+            $path = $parsed['path'] ?? $logo;
+            return new \moodle_url($CFG->wwwroot . $path);
         }
         return parent::get_logo_url($maxwidth, $maxheight);
     }
