@@ -28,18 +28,12 @@ defined('MOODLE_INTERNAL') || die();
 $bodyattributes = $OUTPUT->body_attributes(['login-page']);
 
 // Get logo URL.
-$logourlobj = $OUTPUT->get_logo_url();
-$logourl = $logourlobj ? $logourlobj->out(false) : '';
+$logourl = $OUTPUT->get_logo_url();
+$logourl = $logourl ? (string) $logourl : '';
 
 // Get login background image from theme settings.
-$loginimageurl = $PAGE->theme->setting_file_url('loginbackgroundimage', 'loginbackgroundimage');
-if ($loginimageurl) {
-    $loginimage = parse_url($loginimageurl, PHP_URL_PATH);
-    if ($loginimage) {
-        global $CFG;
-        $loginimage = $CFG->wwwroot . $loginimage;
-    }
-} else {
+$loginimage = $PAGE->theme->setting_file_url('loginbackgroundimage', 'loginbackgroundimage');
+if (empty($loginimage)) {
     $loginimage = '';
 }
 
