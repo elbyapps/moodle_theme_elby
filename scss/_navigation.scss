@@ -3,6 +3,34 @@
 // ============================================================================
 // Using hardcoded colors to avoid SCSS compilation issues
 
+// Navbar height tokens. The navbar is `position: fixed; top: 0;` so every
+// non-popup layout needs an equivalent offset on the page wrapper. Driving
+// this off a CSS variable lets us change the value in one place and keep
+// the navbar height + page offset in sync.
+:root {
+    --elby-navbar-height: 80px;
+}
+
+@media (max-width: 991.98px) {
+    :root {
+        --elby-navbar-height: 70px;
+    }
+}
+
+// Push every page below the fixed-top navbar. We exclude the layouts that
+// don't render a navbar (popup, login, maintenance, embedded) by class.
+// Older scssphp versions used by some Moodle releases don't parse :has(),
+// so we use :not() chains which compile cleanly.
+body:not(.pagelayout-popup):not(.pagelayout-login):not(.pagelayout-maintenance):not(.pagelayout-embedded):not(.pagelayout-print) #page-wrapper {
+    padding-top: var(--elby-navbar-height);
+}
+
+// Lock the navbar to a known height so the offset above always matches.
+nav.navbar.fixed-top,
+.elby-navbar.fixed-top {
+    min-height: var(--elby-navbar-height);
+}
+
 // Header wrapper
 .elby-header {
     z-index: 1030;
@@ -13,6 +41,7 @@
     background-color: #ffffff !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     padding: 1rem 0;
+    min-height: var(--elby-navbar-height);
 }
 
 // Logo and Brand - Left side
@@ -120,9 +149,11 @@
     color: #ffffff !important;
 }
 
-// Navbar spacer (to prevent content from going under fixed navbar)
+// Navbar spacer (legacy: kept for backwards-compat in case any layout still
+// renders <div class="elby-navbar-spacer">; the real offset comes from the
+// `padding-top` rule above driven by --elby-navbar-height).
 .elby-navbar-spacer {
-    height: 80px;
+    height: 0;
 }
 
 // Navbar actions container - Right side
@@ -194,7 +225,7 @@
     }
 
     .elby-navbar-spacer {
-        height: 70px;
+        height: 0;
     }
 }
 
