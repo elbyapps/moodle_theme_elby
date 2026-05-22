@@ -212,23 +212,62 @@ function theme_elby_get_extra_scss($theme) {
     $categoryheadertextcolor = get_config('theme_elby', 'categoryheadertextcolor') ?: '#ffffff';
 
     // Navigation styles (added directly to ensure compilation).
+    //
+    // Fixed-top navbar offset: drive both the navbar height AND the
+    // page-wrapper top padding off a single CSS variable so they stay in
+    // sync on every layout. Excluding popup/login/maintenance/embedded/print
+    // pagelayouts via :not() leaves chromeless flows untouched.
     $scss .= '
+    :root {
+        --elby-navbar-height: 80px;
+    }
+
+    @media (max-width: 991.98px) {
+        :root {
+            --elby-navbar-height: 70px;
+        }
+    }
+
+    /* Push content below the fixed-top navbar via #page’s margin (which
+       Boost already uses for its own 60px navbar). Setting it to our
+       variable replaces Boost’s value, so the offset is the elby navbar
+       height — not Boost’s 60px + our padding stacked on top of each other. */
+    body:not(.pagelayout-popup):not(.pagelayout-login):not(.pagelayout-maintenance):not(.pagelayout-embedded):not(.pagelayout-print) #page {
+        margin-top: var(--elby-navbar-height) !important;
+    }
+
+    /* Ensure #page-wrapper itself has no extra top padding (an earlier
+       version of this fix put the offset here, which stacked with #page’s
+       margin and produced double spacing). */
+    body:not(.pagelayout-popup):not(.pagelayout-login):not(.pagelayout-maintenance):not(.pagelayout-embedded):not(.pagelayout-print) #page-wrapper {
+        padding-top: 0;
+    }
+
     /* Header wrapper */
     .elby-header {
         z-index: 1030;
     }
 
-    /* Navbar - white background with subtle shadow */
+    /* Navbar - white background with subtle shadow.
+       Lock height to --elby-navbar-height so the page-wrapper offset above
+       always matches the actual rendered navbar height. */
     .elby-navbar {
         background-color: #ffffff !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        padding: 2rem 0;
+        padding: 0 0;
+        height: var(--elby-navbar-height);
+        min-height: var(--elby-navbar-height);
     }
 
     nav.navbar.fixed-top.elby-navbar {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
-        height: auto !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        height: var(--elby-navbar-height) !important;
+        min-height: var(--elby-navbar-height) !important;
+    }
+
+    nav.navbar.fixed-top {
+        min-height: var(--elby-navbar-height);
     }
 
     /* Logo and Brand - Left side */
@@ -336,9 +375,11 @@ function theme_elby_get_extra_scss($theme) {
         color: #ffffff !important;
     }
 
-    /* Navbar spacer (to prevent content from going under fixed navbar) */
+    /* Navbar spacer (legacy: kept so any layout that still renders
+       <div class="elby-navbar-spacer"> does not add double spacing). The
+       real offset comes from the #page-wrapper rule above. */
     .elby-navbar-spacer {
-        height: 80px;
+        height: 0;
     }
 
     /* Navbar actions container - Right side */
@@ -410,7 +451,7 @@ function theme_elby_get_extra_scss($theme) {
         }
 
         .elby-navbar-spacer {
-            height: 70px;
+            height: 0;
         }
     }
 

@@ -1,5 +1,33 @@
 /* Elby Theme - Navigation Styles */
 
+/* Navbar height token. Drives both the actual navbar height and the
+   page-wrapper top offset so they stay in sync across every layout. */
+:root {
+    --elby-navbar-height: 80px;
+}
+
+@media (max-width: 991.98px) {
+    :root {
+        --elby-navbar-height: 70px;
+    }
+}
+
+/* Push every page below the fixed-top navbar. We exclude the layouts that
+   don't render a navbar (popup, login, maintenance, embedded, print) by
+   body class. Using :not() chains keeps this compatible with older scssphp
+   versions that some Moodle releases ship with. */
+body:not(.pagelayout-popup):not(.pagelayout-login):not(.pagelayout-maintenance):not(.pagelayout-embedded):not(.pagelayout-print) #page-wrapper {
+    padding-top: var(--elby-navbar-height);
+}
+
+/* Lock the navbar to the same height so the offset above always matches
+   reality. min-height keeps wrapping content (long site name, user menu)
+   from making the navbar taller than the page offset. */
+nav.navbar.fixed-top,
+.elby-navbar.fixed-top {
+    min-height: var(--elby-navbar-height);
+}
+
 /* Header wrapper */
 .elby-header {
     z-index: 1030;
@@ -10,6 +38,7 @@
     background-color: #ffffff !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
     padding: 1rem 0;
+    min-height: var(--elby-navbar-height);
 }
 
 /* Logo and Brand - Left side */
@@ -117,9 +146,12 @@
     color: #ffffff !important;
 }
 
-/* Navbar spacer (to prevent content from going under fixed navbar) */
+/* Legacy spacer (kept for back-compat with any layout that still renders
+   <div class="elby-navbar-spacer">). The real offset comes from the
+   #page-wrapper rule above driven by --elby-navbar-height, so collapse this
+   to 0 to avoid double spacing. */
 .elby-navbar-spacer {
-    height: 80px;
+    height: 0;
 }
 
 /* Navbar actions container - Right side */
@@ -191,7 +223,7 @@
     }
 
     .elby-navbar-spacer {
-        height: 70px;
+        height: 0;
     }
 }
 
